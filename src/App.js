@@ -4,6 +4,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Notfound from "./components/NotFound/Notfound";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function App() {
     return (
         <Router>
@@ -20,6 +24,17 @@ function App() {
                     <Route path="/*" element={<Notfound />}></Route>
                 </Routes>
             </div>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </Router>
     );
 }

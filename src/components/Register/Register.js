@@ -1,13 +1,60 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Register.scss";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 const Register = () => {
     const navigate = useNavigate();
 
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+
     const handleLogin = () => {
         navigate("/login");
     };
+
+    useEffect(() => {
+        // axios.get("http://localhost:8080/api/test-api").then((data) => {
+        //     console.log(">> check data: ", data);
+        // });
+    }, []);
+
+    const isValidInputs = () => {
+        if (!email) {
+            toast.error("Email is required");
+            return false;
+        }
+        let regx = /\S+@\S+\.\S+/;
+        if (!regx.test(email)) {
+            toast.error("Please enter a valid email address");
+            return false;
+        }
+        if (!phone) {
+            toast.error("Phone is required");
+            return false;
+        }
+        if (!password) {
+            toast.error("Password is required");
+            return false;
+        }
+
+        if (password !== confirmPassword) {
+            toast.error("Your password is not the same");
+            return false;
+        }
+
+        return true;
+    };
+
+    const handleRegister = () => {
+        let check = isValidInputs();
+        let userData = { email, username, phone, password };
+    };
+
     return (
         <div className="register-container">
             <div className="container ">
@@ -30,6 +77,8 @@ const Register = () => {
                                 type="text"
                                 placeholder="Email address"
                                 id="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
 
@@ -42,6 +91,8 @@ const Register = () => {
                                 className="form-control"
                                 type="text"
                                 placeholder="Phone number"
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
                             />
                         </div>
 
@@ -54,6 +105,8 @@ const Register = () => {
                                 className="form-control"
                                 type="text"
                                 placeholder="Username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
                             />
                         </div>
 
@@ -64,8 +117,10 @@ const Register = () => {
                             <input
                                 id="password"
                                 className="form-control"
-                                type="password"
+                                type="text"
                                 placeholder="Password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>
 
@@ -76,12 +131,21 @@ const Register = () => {
                             <input
                                 id="re-password"
                                 className="form-control"
-                                type="password"
+                                type="text"
                                 placeholder="Password"
+                                value={confirmPassword}
+                                onChange={(e) =>
+                                    setConfirmPassword(e.target.value)
+                                }
                             />
                         </div>
 
-                        <button className="btn btn-primary">Sign up</button>
+                        <button
+                            className="btn btn-primary"
+                            onClick={handleRegister}
+                        >
+                            Sign up
+                        </button>
 
                         <hr />
                         <div className="text-center">
