@@ -25,4 +25,12 @@ const freshAllUser = (page, limit) => {
     });
 };
 
-export { registerNewUser, loginUser, freshAllUser };
+const deleteUser = (user) => {
+    return axios.delete("http://localhost:8080/api/v1/user/delete", {
+        data: {
+            id: user.id,
+        },
+    });
+};
+
+export { registerNewUser, loginUser, freshAllUser, deleteUser };
