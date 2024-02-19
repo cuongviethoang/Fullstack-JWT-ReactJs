@@ -16,8 +16,13 @@ const loginUser = (valueLogin, password) => {
     });
 };
 
-const freshAllUser = () => {
-    return axios.get("http://localhost:8080/api/v1/user/read");
+const freshAllUser = (page, limit) => {
+    return axios.get(`http://localhost:8080/api/v1/user/read`, {
+        params: {
+            page,
+            limit,
+        },
+    });
 };
 
 export { registerNewUser, loginUser, freshAllUser };
