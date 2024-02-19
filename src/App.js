@@ -1,15 +1,11 @@
-import "./App.scss";
-import Nav from "./components/Navigation/Nav";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Notfound from "./components/NotFound/Notfound";
-import Login from "./components/Login/Login";
-import Register from "./components/Register/Register";
-import User from "./components/ManagerUsers/User";
-
+import { useEffect, useState } from "react";
+import { BrowserRouter as Router } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect, useState } from "react";
-import _ from "lodash";
+
+import Nav from "./components/Navigation/Nav";
+import "./App.scss";
+import AppRoutes from "./routes/AppRoutes";
 
 function App() {
     const [account, setAccount] = useState({});
@@ -21,35 +17,27 @@ function App() {
         }
     }, []);
     return (
-        <Router>
-            <div className="app-container">
-                {account && !_.isEmpty(account) && account.isAuthenticated && (
+        <>
+            <Router>
+                <div className="app-header">
                     <Nav />
-                )}
-
-                <Routes>
-                    <Route path="/login" element={<Login />}></Route>
-                    <Route path="/register" element={<Register />}></Route>
-                    <Route path="/user" element={<User />}></Route>
-                    <Route path="/about">About</Route>
-                    <Route path="/news">News</Route>
-                    <Route path="/contact">Contact</Route>
-                    <Route path="/">Home</Route>
-                    <Route path="/*" element={<Notfound />}></Route>
-                </Routes>
-            </div>
-            <ToastContainer
-                position="top-right"
-                autoClose={2000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-            />
-        </Router>
+                </div>
+                <div className="app-container">
+                    <AppRoutes />
+                </div>
+                <ToastContainer
+                    position="top-right"
+                    autoClose={2000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                />
+            </Router>
+        </>
     );
 }
 

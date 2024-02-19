@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Login.scss";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -8,7 +8,7 @@ const Login = () => {
     const navigate = useNavigate();
 
     const [valueLogin, setValueLogin] = useState("");
-    const [password, setPassword] = useState();
+    const [password, setPassword] = useState("");
     const defaultObjValidInput = {
         isValidValueLogin: true,
         isValidPassword: true,
@@ -47,6 +47,7 @@ const Login = () => {
             };
             sessionStorage.setItem("account", JSON.stringify(data));
             navigate("/user");
+            window.location.reload();
         }
 
         if (response && response.data && +response.data.EC !== 0) {
@@ -54,6 +55,20 @@ const Login = () => {
             toast.error(response.data.EM);
         }
     };
+
+    const handlePressEnter = (e) => {
+        if (e.keyCode === 13 && e.code === "Enter") {
+            handleLogin();
+        }
+    };
+
+    useEffect(() => {
+        let session = sessionStorage.getItem("account");
+        if (session) {
+            navigate("/");
+        }
+    }, []);
+
     return (
         <div className="login-container">
             <div className="container ">
@@ -88,6 +103,7 @@ const Login = () => {
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            onKeyDown={(e) => handlePressEnter(e)}
                         />
                         <button
                             className="btn btn-primary"
