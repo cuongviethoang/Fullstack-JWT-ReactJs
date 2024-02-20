@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./User.scss";
-import { useEffect } from "react";
 import { freshAllUser, deleteUser } from "../../services/userService";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
@@ -9,18 +8,25 @@ import ModalUser from "./ModalUser";
 const User = (props) => {
     const [listUsers, setListUsers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [currentLimit, setCurrentLimit] = useState(3);
+    const [currentLimit, setCurrentLimit] = useState(5);
     const [totalPages, setTotalPages] = useState(0);
 
     const [isShowModalDelete, setIsShowModalDelete] = useState(false);
+
+    // modal delete
     const [dataModal, setDataModal] = useState({});
 
     const [isShowModalUser, setIsShowModalUser] = useState(false);
+    const [actionModalUser, setActionModalUser] = useState("CREATE");
+
+    // modal update
+    const [dataModalUser, setDataModalUser] = useState({});
 
     useEffect(() => {
         freshUsers();
     }, [currentPage]);
 
+    // call api paginate user
     const freshUsers = async () => {
         let response = await freshAllUser(currentPage, currentLimit);
 
@@ -34,14 +40,36 @@ const User = (props) => {
         setCurrentPage(+event.selected + 1);
     };
 
+    // show modal delete
     const handleDeleteUser = async (user) => {
         setDataModal(user);
         setIsShowModalDelete(true);
     };
 
+    // show modal create - edit
+    const handleCreateUser = () => {
+        setActionModalUser("CREATE");
+        setIsShowModalUser(true);
+    };
+
+    // show modal edit - create
+    const handleEditUser = (user) => {
+        setActionModalUser("UPDATE");
+        setDataModalUser(user);
+        setIsShowModalUser(true);
+    };
+
+    // close modal delete
     const handleClose = () => {
         setIsShowModalDelete(false);
         setDataModal({});
+    };
+
+    // close modal create - edit
+    const handleCloseModalUser = async () => {
+        setIsShowModalUser(false);
+        setDataModalUser({});
+        await freshUsers();
     };
 
     const confirmDeleteUser = async () => {
@@ -56,10 +84,6 @@ const User = (props) => {
         }
     };
 
-    const handleCloseModalUser = () => {
-        setIsShowModalUser(false);
-    };
-
     return (
         <>
             <div className="container">
@@ -72,7 +96,7 @@ const User = (props) => {
                             <button className="btn btn-success">Refresh</button>
                             <button
                                 className="btn btn-info"
-                                onClick={() => setIsShowModalUser(true)}
+                                onClick={handleCreateUser}
                             >
                                 Add new user
                             </button>
@@ -95,7 +119,12 @@ const User = (props) => {
                                     <>
                                         {listUsers.map((item, index) => (
                                             <tr key={`row-${index}`}>
-                                                <td>{index + 1}</td>
+                                                <td>
+                                                    {(currentPage - 1) *
+                                                        currentLimit +
+                                                        index +
+                                                        1}
+                                                </td>
                                                 <td>{item.id}</td>
                                                 <td>{item.email}</td>
                                                 <td>{item.username}</td>
@@ -105,7 +134,12 @@ const User = (props) => {
                                                         : ""}
                                                 </td>
                                                 <td>
-                                                    <button className="btn btn-warning me-3">
+                                                    <button
+                                                        className="btn btn-warning me-3"
+                                                        onClick={() =>
+                                                            handleEditUser(item)
+                                                        }
+                                                    >
                                                         Edit
                                                     </button>
                                                     <button
@@ -165,9 +199,10 @@ const User = (props) => {
                 dataModal={dataModal}
             />
             <ModalUser
-                title="Create new user"
                 show={isShowModalUser}
                 onHide={handleCloseModalUser}
+                action={actionModalUser}
+                datamodaluser={dataModalUser}
             />
         </>
     );
