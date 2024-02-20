@@ -15,6 +15,8 @@ const User = (props) => {
     const [isShowModalDelete, setIsShowModalDelete] = useState(false);
     const [dataModal, setDataModal] = useState({});
 
+    const [isShowModalUser, setIsShowModalUser] = useState(false);
+
     useEffect(() => {
         freshUsers();
     }, [currentPage]);
@@ -44,7 +46,6 @@ const User = (props) => {
 
     const confirmDeleteUser = async () => {
         let res = await deleteUser(dataModal);
-        // console.log(">> check res: ", res);
         if (res && res.data && res.data.EC === 0) {
             toast.success(res.data.EM);
             await freshUsers();
@@ -53,6 +54,10 @@ const User = (props) => {
         } else {
             toast.error(res.data.EM);
         }
+    };
+
+    const handleCloseModalUser = () => {
+        setIsShowModalUser(false);
     };
 
     return (
@@ -65,7 +70,10 @@ const User = (props) => {
                         </div>
                         <div className="action">
                             <button className="btn btn-success">Refresh</button>
-                            <button className="btn btn-info">
+                            <button
+                                className="btn btn-info"
+                                onClick={() => setIsShowModalUser(true)}
+                            >
                                 Add new user
                             </button>
                         </div>
@@ -156,7 +164,11 @@ const User = (props) => {
                 confirmDeleteUser={confirmDeleteUser}
                 dataModal={dataModal}
             />
-            <ModalUser title="Create new user" />
+            <ModalUser
+                title="Create new user"
+                show={isShowModalUser}
+                onHide={handleCloseModalUser}
+            />
         </>
     );
 };

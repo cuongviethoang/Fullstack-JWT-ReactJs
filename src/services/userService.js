@@ -37,4 +37,17 @@ const getGroups = () => {
     return axios.get("http://localhost:8080/api/v1/group/read");
 };
 
-export { registerNewUser, loginUser, freshAllUser, deleteUser, getGroups };
+const createNewUser = (userData) => {
+    return axios.post("http://localhost:8080/api/v1/user/create", {
+        ...userData,
+    });
+};
+
+export {
+    registerNewUser,
+    loginUser,
+    freshAllUser,
+    deleteUser,
+    getGroups,
+    createNewUser,
+};
