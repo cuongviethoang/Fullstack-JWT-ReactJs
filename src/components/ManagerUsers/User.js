@@ -18,7 +18,7 @@ const User = (props) => {
     const [dataModal, setDataModal] = useState({});
 
     const [isShowModalUser, setIsShowModalUser] = useState(false);
-    const [actionModalUser, setActionModalUser] = useState("CREATE");
+    const [actionModalUser, setActionModalUser] = useState("");
 
     // modal update
     const [dataModalUser, setDataModalUser] = useState({});
@@ -31,9 +31,9 @@ const User = (props) => {
     const freshUsers = async () => {
         let response = await freshAllUser(currentPage, currentLimit);
 
-        if (response && response.data && response.data.EC === 0) {
-            setTotalPages(response.data.DT.totalPages);
-            setListUsers(response.data.DT.users);
+        if (response && response.EC === 0) {
+            setTotalPages(response.DT.totalPages);
+            setListUsers(response.DT.users);
         }
     };
 
@@ -70,18 +70,19 @@ const User = (props) => {
     const handleCloseModalUser = async () => {
         setIsShowModalUser(false);
         setDataModalUser({});
+        setActionModalUser("");
         await freshUsers();
     };
 
     const confirmDeleteUser = async () => {
         let res = await deleteUser(dataModal);
-        if (res && res.data && res.data.EC === 0) {
-            toast.success(res.data.EM);
+        if (res && res.EC === 0) {
+            toast.success(res.EM);
             await freshUsers();
             setIsShowModalDelete(false);
             setDataModal({});
         } else {
-            toast.error(res.data.EM);
+            toast.error(res.EM);
         }
     };
 
@@ -102,14 +103,14 @@ const User = (props) => {
                                 className="btn btn-success me-3"
                                 onClick={() => handleRefresh()}
                             >
-                                <i class="fa fa-refresh"></i>
+                                <i className="fa fa-refresh"></i>
                                 Refresh
                             </button>
                             <button
                                 className="btn btn-info"
                                 onClick={handleCreateUser}
                             >
-                                <i class="fa fa-plus"></i>
+                                <i className="fa fa-plus"></i>
                                 Add new user
                             </button>
                         </div>

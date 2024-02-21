@@ -25,12 +25,6 @@ const Register = () => {
         navigate("/login");
     };
 
-    useEffect(() => {
-        // axios.get("http://localhost:8080/api/v1/test-api").then((data) => {
-        //     console.log(">> check data: ", data);
-        // });
-    }, []);
-
     const isValidInputs = () => {
         setObjCheckInput(defaultValidInput);
         if (!email) {
@@ -78,7 +72,7 @@ const Register = () => {
                 password
             );
 
-            let serverData = response.data;
+            let serverData = response;
             if (+serverData.EC === 0) {
                 toast.success(serverData.EM);
                 navigate("/login");
