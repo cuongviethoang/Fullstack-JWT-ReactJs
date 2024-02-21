@@ -2,7 +2,11 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useState, useEffect } from "react";
-import { getGroups, createNewUser } from "../../services/userService";
+import {
+    getGroups,
+    createNewUser,
+    updateCurrentUser,
+} from "../../services/userService";
 import { toast } from "react-toastify";
 import _ from "lodash";
 
@@ -88,6 +92,8 @@ function ModalUser(props) {
     };
 
     const checkValidInputs = () => {
+        if (action === "UPDATE") return true;
+
         setValidInputs(validInputsDefault);
         let arr = ["email", "phone", "password", "group"];
         let check = true;
@@ -111,14 +117,23 @@ function ModalUser(props) {
         let check = checkValidInputs();
 
         if (check === true) {
-            let res = await createNewUser({
-                ...userData,
-                groupId: userData.group,
-            });
+            let res =
+                action === "CREATE"
+                    ? await createNewUser({
+                          ...userData,
+                          groupId: userData.group,
+                      })
+                    : await updateCurrentUser({
+                          ...userData,
+                          groupId: userData.group,
+                      });
             if (res && res.data && res.data.EC === 0) {
                 setUserData({
                     ...defaultUserData,
-                    group: userGroups[0].id,
+                    group:
+                        userGroups && userGroups.length > 0
+                            ? userGroups[0].id
+                            : "",
                     sex: "Male",
                 });
                 props.onHide();

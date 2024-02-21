@@ -5,6 +5,7 @@ import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
 import ModalDelete from "./ModalDelete";
 import ModalUser from "./ModalUser";
+
 const User = (props) => {
     const [listUsers, setListUsers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -84,20 +85,31 @@ const User = (props) => {
         }
     };
 
+    const handleRefresh = async () => {
+        await freshUsers();
+    };
+
     return (
         <>
             <div className="container">
                 <div className="manage-users-container">
-                    <div className="user-header">
+                    <div className="user-header my-3">
                         <div className="title">
-                            <h3>Table user</h3>
+                            <h3>Manager user</h3>
                         </div>
                         <div className="action">
-                            <button className="btn btn-success">Refresh</button>
+                            <button
+                                className="btn btn-success me-3"
+                                onClick={() => handleRefresh()}
+                            >
+                                <i class="fa fa-refresh"></i>
+                                Refresh
+                            </button>
                             <button
                                 className="btn btn-info"
                                 onClick={handleCreateUser}
                             >
+                                <i class="fa fa-plus"></i>
                                 Add new user
                             </button>
                         </div>
@@ -167,7 +179,7 @@ const User = (props) => {
                         </table>
                     </div>
                     {totalPages > 0 && (
-                        <div className="user-footer">
+                        <div className="user-footer d-flex justify-content-center">
                             <ReactPaginate
                                 nextLabel="next >"
                                 onPageChange={handlePageClick}
