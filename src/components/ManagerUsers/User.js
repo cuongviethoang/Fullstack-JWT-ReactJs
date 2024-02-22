@@ -1,12 +1,16 @@
-import { useState, useEffect } from "react";
-import "./User.scss";
-import { freshAllUser, deleteUser } from "../../services/userService";
+import { useState, useEffect, useContext } from "react";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
-import ModalDelete from "./ModalDelete";
+
+import "./User.scss";
 import ModalUser from "./ModalUser";
+import ModalDelete from "./ModalDelete";
+import { freshAllUser, deleteUser } from "../../services/userService";
+import { UserContext } from "../../Context/userContext";
 
 const User = (props) => {
+    const { user } = useContext(UserContext);
+
     const [listUsers, setListUsers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [currentLimit, setCurrentLimit] = useState(5);

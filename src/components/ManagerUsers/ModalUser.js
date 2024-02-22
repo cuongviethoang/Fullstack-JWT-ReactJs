@@ -77,7 +77,7 @@ function ModalUser(props) {
                 setUserData({ ...userData, group: groups[0].id, sex: "Male" });
             }
         } else {
-            toast.error(res.EM);
+            toast.error(res?.EM);
         }
     };
 

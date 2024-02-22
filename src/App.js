@@ -1,30 +1,43 @@
-import { useEffect, useState } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { UserContext } from "./Context/userContext";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Rings } from "react-loader-spinner";
 
-import Nav from "./components/Navigation/Nav";
 import "./App.scss";
+import Nav from "./components/Navigation/Nav";
 import AppRoutes from "./routes/AppRoutes";
 
 function App() {
-    const [account, setAccount] = useState({});
-
-    useEffect(() => {
-        let session = sessionStorage.getItem("account");
-        if (session) {
-            setAccount(JSON.parse(session));
-        }
-    }, []);
+    const { user } = useContext(UserContext);
     return (
         <>
             <Router>
-                <div className="app-header">
-                    <Nav />
-                </div>
-                <div className="app-container">
-                    <AppRoutes />
-                </div>
+                {user && user.isLoading ? (
+                    <div className="loading-container">
+                        <Rings
+                            height="80"
+                            width="80"
+                            radius="9"
+                            color="#1877f2"
+                            ariaLabel="loading"
+                            wrapperStyle
+                            wrapperClass
+                        />
+                        <div>Loading data...</div>
+                    </div>
+                ) : (
+                    <>
+                        <div className="app-header">
+                            <Nav />
+                        </div>
+                        <div className="app-container">
+                            <AppRoutes />
+                        </div>
+                    </>
+                )}
+
                 <ToastContainer
                     position="top-right"
                     autoClose={2000}

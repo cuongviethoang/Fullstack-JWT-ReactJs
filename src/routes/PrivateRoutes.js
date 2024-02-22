@@ -1,17 +1,21 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { UserContext } from "../Context/userContext";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 const PrivateRoutes = (props) => {
     const navigate = useNavigate();
+    const { user } = useContext(UserContext);
+
+    const content = user && user.isAuthenticated ? <>{props.children}</> : null;
 
     useEffect(() => {
-        let session = sessionStorage.getItem("account");
-        if (!session) {
-            toast.info("Vui lòng đăng nhập tài khoản");
+        if (!content) {
+            toast.info("You need to log in to use this function");
             navigate("/login");
         }
-    }, []);
-    return <>{props.children}</>;
+    }, [content]);
+
+    return content;
 };
 
 export default PrivateRoutes;
