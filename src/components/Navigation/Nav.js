@@ -9,12 +9,13 @@ const Nav = (props) => {
         let session = sessionStorage.getItem("account");
 
         if (
-            location.pathname === "/login" ||
-            location.pathname === "/Login" ||
+            (location.pathname === "/login" ||
+                location.pathname === "/Login" ||
+                location.pathname === "/register") &&
             !session
         ) {
             setIsShow(false);
-        } else if (session) {
+        } else {
             setIsShow(true);
         }
     }, []);

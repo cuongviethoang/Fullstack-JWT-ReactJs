@@ -47,7 +47,6 @@ const Login = () => {
             };
             sessionStorage.setItem("account", JSON.stringify(data));
             navigate("/user");
-            window.location.reload();
         }
 
         if (response && +response.EC !== 0) {
