@@ -57,6 +57,8 @@ const Login = () => {
                     username,
                 },
             };
+
+            localStorage.setItem("jwt", token);
             loginContext(data);
             navigate("/user");
         }

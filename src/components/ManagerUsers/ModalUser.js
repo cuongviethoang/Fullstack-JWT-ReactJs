@@ -143,7 +143,7 @@ function ModalUser(props) {
                 props.onHide();
                 toast.info(res.EM);
             } else if (res && res.EC !== 0) {
-                toast.error(res.EM);
+                toast.error(res?.EM);
                 let _validInputs = _.cloneDeep(validInputsDefault);
                 _validInputs[res.DT] = false;
                 setValidInputs(_validInputs);

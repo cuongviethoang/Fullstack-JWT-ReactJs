@@ -86,7 +86,7 @@ const User = (props) => {
             setIsShowModalDelete(false);
             setDataModal({});
         } else {
-            toast.error(res.EM);
+            toast.error(res?.EM);
         }
     };
 
