@@ -17,6 +17,10 @@ const loginUser = (valueLogin, password) => {
     });
 };
 
+const logoutUser = () => {
+    return axios.post("/api/v1/logout");
+};
+
 const freshAllUser = (page, limit) => {
     return axios.get(`/api/v1/user/read`, {
         params: {
@@ -57,6 +61,7 @@ const getUserAccount = () => {
 export {
     registerNewUser,
     loginUser,
+    logoutUser,
     freshAllUser,
     deleteUser,
     getGroups,

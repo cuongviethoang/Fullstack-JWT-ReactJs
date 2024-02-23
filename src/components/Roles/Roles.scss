@@ -1,0 +1,15 @@
+.role-container {
+    .role-parent {
+        .custom-icon {
+            padding: 7px 10px 0 0;
+            font-size: 22px;
+            cursor: pointer;
+        }
+        .custom-icon:nth-child(1) {
+            color: green;
+        }
+        .custom-icon:nth-child(2) {
+            color: red;
+        }
+    }
+}
