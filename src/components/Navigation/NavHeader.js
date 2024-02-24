@@ -18,6 +18,7 @@ const NavHeader = (props) => {
     const { user, logoutContext } = useContext(UserContext);
 
     const handleLogoutUser = async () => {
+        console.log("Logout");
         let response = await logoutUser();
         if (response && +response.EC === 0) {
             localStorage.removeItem("jwt");
@@ -54,6 +55,12 @@ const NavHeader = (props) => {
                                     </NavLink>
                                     <NavLink className="nav-link" to="/roles">
                                         Roles
+                                    </NavLink>
+                                    <NavLink
+                                        className="nav-link"
+                                        to="/group-role"
+                                    >
+                                        GroupRoles
                                     </NavLink>
                                 </Nav>
                                 <Nav>
