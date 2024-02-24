@@ -1,13 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useRef } from "react";
 import { useState } from "react";
 import _ from "lodash";
 import { v4 as uuidv4 } from "uuid"; // dùng dể tạo ra id ngẫu nhiên
-import { createRoles } from "../../services/roleService";
-
-import "./Roles.scss";
 import { toast } from "react-toastify";
 
+import "./Roles.scss";
+import { createRoles } from "../../services/roleService";
+import TableRole from "./TableRole";
+
 function Roles() {
+    const roleRef = useRef();
     const dataChildDefault = {
         url: "",
         description: "",
@@ -63,6 +65,9 @@ function Roles() {
             let response = await createRoles(data);
             if (response && +response.EC === 0) {
                 toast.success(response.EM);
+                roleRef.current.fetchListRolesAgain();
+            } else {
+                toast.warning(response?.EM);
             }
         } else {
             toast.error("Input url must not be empty");
@@ -76,7 +81,7 @@ function Roles() {
     return (
         <div className="role-container">
             <div className="container">
-                <div className=" mt-3">
+                <div className="adding-role mt-3">
                     <div className="title-role">
                         <h3>Add a new role....</h3>
                     </div>
@@ -152,6 +157,11 @@ function Roles() {
                             </button>
                         </div>
                     </div>
+                </div>
+                <hr />
+                <div className="mt-3">
+                    <h4>List Roles:</h4>
+                    <TableRole ref={roleRef} />
                 </div>
             </div>
         </div>
