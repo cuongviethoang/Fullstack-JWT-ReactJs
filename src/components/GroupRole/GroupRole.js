@@ -4,7 +4,11 @@ import { getGroups } from "../../services/userService";
 import { toast } from "react-toastify";
 import _ from "lodash";
 
-import { freshAllRoles, fetchRolesByGroup } from "../../services/roleService";
+import {
+    freshAllRoles,
+    fetchRolesByGroup,
+    assignRolesToGroup,
+} from "../../services/roleService";
 
 import "./GroupRole.scss";
 
@@ -89,6 +93,36 @@ function GroupRole() {
         }
     };
 
+    const buildDataToAssignRolesToGroup = () => {
+        let result = {};
+        const _assignRolesByGroup = _.cloneDeep(assignRolesByGroup);
+        result.groupId = selectGroup;
+
+        let groupRolesFilter = _assignRolesByGroup.filter(
+            (item) => item.isAssigned === true
+        );
+
+        let finalGroupRoles = groupRolesFilter.map((role) => {
+            let item = {
+                groupId: selectGroup,
+                roleId: role.id,
+            };
+            return item;
+        });
+        result.groupRoles = finalGroupRoles;
+        return result;
+    };
+
+    const handleAssignRolesToGroup = async () => {
+        let data = buildDataToAssignRolesToGroup();
+        let response = await assignRolesToGroup(data);
+        if (response && +response.EC === 0) {
+            toast.success(response?.EM);
+        } else {
+            toast.error(response?.EM);
+        }
+    };
+
     return (
         <div className="group-role-container">
             <div className="container">
@@ -155,7 +189,12 @@ function GroupRole() {
                                         </div>
                                     ))}
                                 <div className="mt-3">
-                                    <button className="btn btn-warning">
+                                    <button
+                                        className="btn btn-warning"
+                                        onClick={() =>
+                                            handleAssignRolesToGroup()
+                                        }
+                                    >
                                         Save
                                     </button>
                                 </div>
