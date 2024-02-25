@@ -53,9 +53,6 @@ instance.interceptors.response.use(
                 return error.response.data;
             }
             case 403: {
-                toast.error(
-                    "you don't have permission to access this resource"
-                );
                 return error.response.data;
             }
 
@@ -80,7 +77,7 @@ instance.interceptors.response.use(
                 return error.response.data;
             }
             default: {
-                return error.response.data;
+                return;
             }
         }
     }

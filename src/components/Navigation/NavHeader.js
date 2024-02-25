@@ -45,7 +45,11 @@ const NavHeader = (props) => {
                             <Navbar.Toggle aria-controls="basic-navbar-nav" />
                             <Navbar.Collapse id="basic-navbar-nav">
                                 <Nav className="me-auto">
-                                    <NavLink to="/" exact className="nav-link">
+                                    <NavLink
+                                        to="/"
+                                        exact="true"
+                                        className="nav-link"
+                                    >
                                         Home
                                     </NavLink>
                                     <NavLink className="nav-link" to="/user">
@@ -94,7 +98,7 @@ const NavHeader = (props) => {
                                     ) : (
                                         <NavLink
                                             to="/login"
-                                            exact
+                                            exact="true"
                                             className="nav-link"
                                         >
                                             Login

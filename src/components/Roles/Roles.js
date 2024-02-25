@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import "./Roles.scss";
 import { createRoles } from "../../services/roleService";
 import TableRole from "./TableRole";
+import { updateRole } from "../../services/roleService";
 
 function Roles() {
     const roleRef = useRef();
@@ -45,6 +46,7 @@ function Roles() {
     const buildDataToPersist = () => {
         let _listChilds = _.cloneDeep(listChilds);
         let result = [];
+        console.log(">> check _listChilds persist: ", _listChilds);
         Object.entries(_listChilds).map(([key, value], index) => {
             return result.push({
                 url: value.url,
@@ -68,6 +70,44 @@ function Roles() {
                 roleRef.current.fetchListRolesAgain();
             } else {
                 toast.warning(response?.EM);
+            }
+        } else {
+            toast.error("Input url must not be empty");
+            const key = invalidObj[0];
+            let _listChilds = _.cloneDeep(listChilds);
+            _listChilds[key]["isValidUrl"] = false;
+            setListChilds(_listChilds);
+        }
+    };
+
+    const handleEditClick = (childData) => {
+        const _dataChildDefault = _.cloneDeep(dataChildDefault);
+        _dataChildDefault.id = childData.id;
+        _dataChildDefault.url = childData.url;
+        _dataChildDefault.description = childData.description;
+        console.log(">> obj edit: ", _dataChildDefault);
+        setListChilds({
+            child1: _dataChildDefault,
+        });
+    };
+
+    const handleSaveEditRole = async () => {
+        let invalidObj = Object.entries(listChilds).find(
+            ([key, value], index) => {
+                return value && !value.url.trim();
+            }
+        );
+        if (!invalidObj) {
+            const _dataChildDefault = _.cloneDeep(listChilds.child1);
+            let response = await updateRole(_dataChildDefault);
+            if (response && +response.EC === 0) {
+                toast.success(response.EM);
+                setListChilds({
+                    child1: dataChildDefault,
+                });
+                roleRef.current.fetchListRolesAgain();
+            } else {
+                toast.error(response?.EM);
             }
         } else {
             toast.error("Input url must not be empty");
@@ -148,12 +188,18 @@ function Roles() {
                             }
                         )}
 
-                        <div className="">
+                        <div className="mt-3">
                             <button
-                                className="btn btn-warning mt-3"
+                                className="btn btn-info me-3"
                                 onClick={() => handleSaveRoles()}
                             >
                                 Save
+                            </button>
+                            <button
+                                className="btn btn-warning"
+                                onClick={() => handleSaveEditRole()}
+                            >
+                                Corfirm edit
                             </button>
                         </div>
                     </div>
@@ -161,7 +207,7 @@ function Roles() {
                 <hr />
                 <div className="mt-3">
                     <h4>List Roles:</h4>
-                    <TableRole ref={roleRef} />
+                    <TableRole ref={roleRef} onEditClick={handleEditClick} />
                 </div>
             </div>
         </div>
