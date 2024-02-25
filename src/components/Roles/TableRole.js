@@ -41,7 +41,7 @@ const TableRole = forwardRef((props, ref) => {
     }));
 
     return (
-        <div>
+        <div className="overflow-auto">
             <table className="table table-hover table-bordered">
                 <thead>
                     <tr>
@@ -51,7 +51,7 @@ const TableRole = forwardRef((props, ref) => {
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="text-center">
                     {listRoles && listRoles.length > 0 ? (
                         <>
                             {listRoles.map((item, index) => (
@@ -60,7 +60,7 @@ const TableRole = forwardRef((props, ref) => {
                                     <td>{item.url}</td>
                                     <td>{item.description}</td>
 
-                                    <td>
+                                    <td className="d-flex justify-content-center ">
                                         <button className="btn btn-warning me-3">
                                             Edit
                                         </button>

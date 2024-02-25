@@ -25,7 +25,7 @@ const UserProvider = ({ children }) => {
 
     const fetchUser = async () => {
         let response = await getUserAccount();
-        console.log(response);
+        console.log(">> fetch user context: ", response);
         if (response && response.EC === 0) {
             let token = response.DT.access_token;
             let groupWithRoles = response.DT.groupWithRole;
@@ -49,14 +49,15 @@ const UserProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        if (
-            window.location.pathname !== "/" &&
-            window.location.pathname !== "/login"
-        ) {
-            fetchUser();
-        } else {
-            setUser({ ...user, isLoading: false });
-        }
+        // if (
+        //     window.location.pathname !== "/" &&
+        //     window.location.pathname !== "/login"
+        // ) {
+        //     fetchUser();
+        // } else {
+        //     setUser({ ...user, isLoading: false });
+        // }
+        fetchUser();
     }, []);
 
     return (

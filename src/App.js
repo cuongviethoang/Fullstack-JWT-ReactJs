@@ -1,9 +1,10 @@
 import { BrowserRouter as Router } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "./Context/userContext";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Rings } from "react-loader-spinner";
+import { Scrollbars } from "react-custom-scrollbars";
 
 import "./App.scss";
 import NavHeader from "./components/Navigation/NavHeader";
@@ -11,8 +12,14 @@ import AppRoutes from "./routes/AppRoutes";
 
 function App() {
     const { user } = useContext(UserContext);
+    const [scrollHeight, setScrollHeight] = useState(0);
+
+    useEffect(() => {
+        let windowHeight = window.innerHeight;
+        setScrollHeight(windowHeight);
+    }, [user]);
     return (
-        <>
+        <Scrollbars autoHide style={{ height: scrollHeight }}>
             <Router>
                 {user && user.isLoading ? (
                     <div className="loading-container">
@@ -37,7 +44,6 @@ function App() {
                         </div>
                     </>
                 )}
-
                 <ToastContainer
                     position="top-right"
                     autoClose={2000}
@@ -50,7 +56,7 @@ function App() {
                     pauseOnHover
                 />
             </Router>
-        </>
+        </Scrollbars>
     );
 }
 

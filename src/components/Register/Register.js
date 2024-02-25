@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { UserContext } from "../../Context/userContext";
 import "./Register.scss";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { registerNewUser } from "../../services/userService";
 const Register = () => {
     const navigate = useNavigate();
+    const { user } = useContext(UserContext);
 
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
@@ -20,6 +21,12 @@ const Register = () => {
         isValidConfirmPassword: true,
     };
     const [objCheckInput, setObjCheckInput] = useState(defaultValidInput);
+
+    useEffect(() => {
+        if (user && user.isAuthenticated) {
+            navigate("/");
+        }
+    }, []);
 
     const handleLogin = () => {
         navigate("/login");
@@ -86,14 +93,10 @@ const Register = () => {
         <div className="register-container">
             <div className="container ">
                 <div className="row px-sm-0 px-3">
-                    <div className="content-left col-12 d-none d-none col-sm-7 d-sm-block">
+                    <div className="content-left col-12 d-none d-none col-sm-5 d-sm-flex justify-content-center align-items-center">
                         <div className="brand">Register</div>
-                        <div className="detail">
-                            Learning everything Learning everything Learning
-                            everything Learning everything
-                        </div>
                     </div>
-                    <div className="content-right col-12 col-sm-5 d-flex flex-column gap-3 py-3">
+                    <div className="content-right col-12 col-sm-7 d-flex flex-column gap-3 py-3">
                         <div className="brand d-sm-none brand">Login</div>
                         <div className="form-group">
                             <label htmlFor="email" className="form-label">
@@ -199,6 +202,9 @@ const Register = () => {
                                 Already-ve an account. Login
                             </button>
                         </div>
+                        <Link to="/" className="text-center">
+                            Return to homepage
+                        </Link>
                     </div>
                 </div>
             </div>

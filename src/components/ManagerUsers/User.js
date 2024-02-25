@@ -119,7 +119,7 @@ const User = (props) => {
                             </button>
                         </div>
                     </div>
-                    <div className="user-body">
+                    <div className="user-body overflow-auto">
                         <table className="table table-hover table-bordered">
                             <thead>
                                 <tr>
@@ -131,7 +131,7 @@ const User = (props) => {
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody className="text-center">
                                 {listUsers && listUsers.length > 0 ? (
                                     <>
                                         {listUsers.map((item, index) => (
@@ -150,9 +150,9 @@ const User = (props) => {
                                                         ? item.Group.name
                                                         : ""}
                                                 </td>
-                                                <td>
+                                                <td className="d-flex justify-content-center gap-3">
                                                     <button
-                                                        className="btn btn-warning me-3"
+                                                        className="btn btn-warning"
                                                         onClick={() =>
                                                             handleEditUser(item)
                                                         }

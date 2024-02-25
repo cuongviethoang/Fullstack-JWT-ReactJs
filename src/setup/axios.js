@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 
 // Set config defaults when creating the instance
 const instance = axios.create({
-    baseURL: "http://localhost:8080",
+    baseURL: process.env.REACT_APP_BACKEND_URL,
 });
 
 instance.defaults.withCredentials = true; // config axios : mỗi khi gửi req lên server nodejs sẽ luôn mặc định đính kèm cookie
@@ -41,40 +41,46 @@ instance.interceptors.response.use(
 
         switch (status) {
             case 401: {
-                toast.error("Unauthorize the user. Please Login...");
+                if (
+                    window.location.pathname !== "/" &&
+                    window.location.pathname !== "/login" &&
+                    window.location.pathname !== "/register"
+                ) {
+                    toast.error("Unauthorize the user. Please Login...");
+                }
                 // window.location.href = "/login";
                 // return Promise.reject(error);
-                return;
+                return error.response.data;
             }
             case 403: {
                 toast.error(
                     "you don't have permission to access this resource"
                 );
-                return;
+                return error.response.data;
             }
 
             case 400: {
                 toast.error("Error 400");
-                return;
+                return error.response.data;
             }
 
             case 404: {
                 toast.error("Error 404");
 
-                return;
+                return error.response.data;
             }
             case 409: {
                 toast.error("Error 409");
 
-                return;
+                return error.response.data;
             }
             case 422: {
                 toast.error("Error 422");
 
-                return;
+                return error.response.data;
             }
             default: {
-                return;
+                return error.response.data;
             }
         }
     }
