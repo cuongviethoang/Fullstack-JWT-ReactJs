@@ -14,6 +14,8 @@ const Register = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
+    const [hiddenPassword, setHiddenPassword] = useState(false);
+
     const defaultValidInput = {
         isValidEmail: true,
         isValidPhone: true,
@@ -159,11 +161,22 @@ const Register = () => {
                                         ? "form-control"
                                         : "form-control is-invalid"
                                 }
-                                type="text"
+                                type={hiddenPassword ? "text" : "password"}
                                 placeholder="Password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
+
+                            <i
+                                className={
+                                    hiddenPassword
+                                        ? "fa fa-eye icon-eye"
+                                        : "fa fa-eye-slash icon-eye"
+                                }
+                                onClick={() =>
+                                    setHiddenPassword(!hiddenPassword)
+                                }
+                            ></i>
                         </div>
 
                         <div className="form-group">

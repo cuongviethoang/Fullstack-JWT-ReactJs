@@ -18,6 +18,8 @@ const Login = () => {
     };
     const [objValidInput, setObjValidInput] = useState(defaultObjValidInput);
 
+    const [hiddenPassword, setHiddenPassword] = useState(false);
+
     useEffect(() => {
         if (user && user.isAuthenticated === true) {
             navigate("/");
@@ -91,29 +93,43 @@ const Login = () => {
                     </div>
                     <div className="content-right col-12 col-sm-7 d-flex flex-column gap-3 py-3">
                         <div className="brand d-sm-none brand">Login</div>
-                        <input
-                            className={
-                                objValidInput.isValidValueLogin
-                                    ? "form-control"
-                                    : "form-control is-invalid"
-                            }
-                            type="text"
-                            placeholder="Email address or phone number"
-                            value={valueLogin}
-                            onChange={(e) => setValueLogin(e.target.value)}
-                        />
-                        <input
-                            className={
-                                objValidInput.isValidPassword
-                                    ? "form-control"
-                                    : "form-control is-invalid"
-                            }
-                            type="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            onKeyDown={(e) => handlePressEnter(e)}
-                        />
+                        <div className="form-group">
+                            <input
+                                className={
+                                    objValidInput.isValidValueLogin
+                                        ? "form-control"
+                                        : "form-control is-invalid"
+                                }
+                                type="text"
+                                placeholder="Email address or phone number"
+                                value={valueLogin}
+                                onChange={(e) => setValueLogin(e.target.value)}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <input
+                                className={
+                                    objValidInput.isValidPassword
+                                        ? "form-control"
+                                        : "form-control is-invalid"
+                                }
+                                type={hiddenPassword ? "text" : "password"}
+                                placeholder="Password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                onKeyDown={(e) => handlePressEnter(e)}
+                            />
+                            <i
+                                className={
+                                    hiddenPassword
+                                        ? "fa fa-eye icon-eye"
+                                        : "fa fa-eye-slash icon-eye"
+                                }
+                                onClick={() =>
+                                    setHiddenPassword(!hiddenPassword)
+                                }
+                            ></i>
+                        </div>
                         <button
                             className="btn btn-primary"
                             onClick={handleLogin}

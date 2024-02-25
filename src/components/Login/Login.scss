@@ -39,5 +39,17 @@
                 text-decoration: underline;
             }
         }
+
+        .form-group {
+            position: relative;
+
+            .icon-eye {
+                cursor: pointer;
+                position: absolute;
+                right: 2%;
+                top: 24%;
+                font-size: 22px;
+            }
+        }
     }
 }
